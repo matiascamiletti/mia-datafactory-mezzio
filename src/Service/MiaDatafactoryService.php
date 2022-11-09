@@ -68,10 +68,27 @@ class MiaDatafactoryService
     protected function convertXmlToJson($xmlString)
     {
         //$xml= file_get_contents($url);
+        $xmlString = $this->removeContentInNode($xmlString, 'local');
+        $xmlString = $this->removeContentInNode($xmlString, 'visitante');
+
         $xmlString = str_replace(array("\n", "\r", "\t"), '', $xmlString);
         $xmlString = trim(str_replace('"', "'", $xmlString));
         $simpleXml = simplexml_load_string($xmlString);
         $jsonString = json_encode($simpleXml);
         return json_decode($jsonString);
+    }
+
+    protected function removeContentInNode($xmlString, $nodeName)
+    {
+        $totalNodes = str_word_count('<' . $nodeName);
+        $lastIndex = 0;
+        for ($i=0; $i < $totalNodes; $i++) { 
+            $indexStart = stripos($xmlString, '<' . $nodeName, $lastIndex);
+            $indexStartContent = stripos($xmlString, '>', $indexStart);
+            $indexEnd = stripos($xmlString, '</' . $nodeName, $indexStartContent);
+            $xmlString = substr($xmlString, 0, $indexStartContent+1) . substr($xmlString, $indexEnd);
+        }
+
+        return $xmlString;
     }
 }
