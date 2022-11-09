@@ -87,6 +87,7 @@ class MiaDatafactoryService
             $indexStartContent = stripos($xmlString, '>', $indexStart);
             $indexEnd = stripos($xmlString, '</' . $nodeName, $indexStartContent);
             $xmlString = substr($xmlString, 0, $indexStartContent+1) . substr($xmlString, $indexEnd);
+            $lastIndex = $indexEnd;
         }
 
         return $xmlString;
