@@ -80,7 +80,7 @@ class MiaDatafactoryService
 
     protected function removeContentInNode($xmlString, $nodeName)
     {
-        $totalNodes = str_word_count('<' . $nodeName);
+        $totalNodes = substr_count($xmlString, '<' . $nodeName);
         $lastIndex = 0;
         for ($i=0; $i < $totalNodes; $i++) { 
             $indexStart = stripos($xmlString, '<' . $nodeName, $lastIndex);
